@@ -1,5 +1,11 @@
-document.addEventListener('DOMContentLoaded', () => {
-  let links = JSON.parse(localStorage.getItem('mediaLinks')) || [];
+document.addEventListener('DOMContentLoaded', async () => {
+  let links = [];
+  try {
+    const response = await fetch('/api/links');
+    links = await response.json();
+  } catch (error) {
+    console.error('Failed to load links:', error);
+  }
   let editingIndex = -1;
 
   renderLinks(links);
@@ -35,7 +41,17 @@ document.addEventListener('DOMContentLoaded', () => {
       links.push({ title, url, image });
     }
 
-    localStorage.setItem('mediaLinks', JSON.stringify(links));
+    // Save to server
+    try {
+      await fetch('/api/links', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(links)
+      });
+    } catch (error) {
+      console.error('Failed to save links:', error);
+    }
+
     renderLinks(links);
 
     // Hide form and clear inputs
@@ -78,10 +94,18 @@ function renderLinks(links) {
   });
 
   document.querySelectorAll('.delete-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
+    btn.addEventListener('click', async (e) => {
       const index = parseInt(e.target.dataset.index);
       links.splice(index, 1);
-      localStorage.setItem('mediaLinks', JSON.stringify(links));
+      try {
+        await fetch('/api/links', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(links)
+        });
+      } catch (error) {
+        console.error('Failed to save links:', error);
+      }
       renderLinks(links);
     });
   });
