@@ -13,15 +13,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Drag and drop for reordering
   document.addEventListener('dragstart', (e) => {
-    if (e.target.classList.contains('media-card')) {
-      draggedIndex = parseInt(e.target.dataset.index);
-      e.target.style.opacity = '0.5';
+    const card = e.target.closest('.media-card');
+    if (card) {
+      draggedIndex = parseInt(card.dataset.index);
+      card.style.opacity = '0.5';
     }
   });
 
   document.addEventListener('dragend', (e) => {
-    if (e.target.classList.contains('media-card')) {
-      e.target.style.opacity = '1';
+    const card = e.target.closest('.media-card');
+    if (card) {
+      card.style.opacity = '1';
       draggedIndex = null;
     }
   });
@@ -32,8 +34,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   document.addEventListener('drop', async (e) => {
     e.preventDefault();
-    if (e.target.classList.contains('media-card') && draggedIndex !== null) {
-      const dropIndex = parseInt(e.target.dataset.index);
+    const dropCard = e.target.closest('.media-card');
+    if (dropCard && draggedIndex !== null) {
+      const dropIndex = parseInt(dropCard.dataset.index);
       if (draggedIndex !== dropIndex) {
         // Reorder the array
         const [draggedItem] = links.splice(draggedIndex, 1);
