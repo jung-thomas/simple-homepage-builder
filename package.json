@@ -1,0 +1,17 @@
+{
+  "name": "simple-homepage-builder",
+  "version": "1.0.0",
+  "description": "Single-page media links app with Netflix-like UI",
+  "main": "server.js",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.0",
+    "puppeteer": "^24.15.0",
+    "sharp": "^0.33.0"
+  }
+}
