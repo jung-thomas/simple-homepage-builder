@@ -7,8 +7,51 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.error('Failed to load links:', error);
   }
   let editingIndex = -1;
+  let draggedIndex = null;
 
   renderLinks(links);
+
+  // Drag and drop for reordering
+  document.addEventListener('dragstart', (e) => {
+    if (e.target.classList.contains('media-card')) {
+      draggedIndex = parseInt(e.target.dataset.index);
+      e.target.style.opacity = '0.5';
+    }
+  });
+
+  document.addEventListener('dragend', (e) => {
+    if (e.target.classList.contains('media-card')) {
+      e.target.style.opacity = '1';
+      draggedIndex = null;
+    }
+  });
+
+  document.addEventListener('dragover', (e) => {
+    e.preventDefault();
+  });
+
+  document.addEventListener('drop', async (e) => {
+    e.preventDefault();
+    if (e.target.classList.contains('media-card') && draggedIndex !== null) {
+      const dropIndex = parseInt(e.target.dataset.index);
+      if (draggedIndex !== dropIndex) {
+        // Reorder the array
+        const [draggedItem] = links.splice(draggedIndex, 1);
+        links.splice(dropIndex, 0, draggedItem);
+        renderLinks(links);
+        // Save to server
+        try {
+          await fetch('/api/links', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(links)
+          });
+        } catch (error) {
+          console.error('Failed to save links:', error);
+        }
+      }
+    }
+  });
 
   // Add link functionality
   document.getElementById('add-link-btn').addEventListener('click', () => {
@@ -49,15 +92,34 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 });
 
+function fitImage(img) {
+  const aspectRatio = img.naturalWidth / img.naturalHeight;
+  if (aspectRatio > 1) {
+    // Landscape: fit width
+    img.style.width = '100%';
+    img.style.height = 'auto';
+    img.style.maxHeight = '300px';
+  } else {
+    // Portrait or square: fit height
+    img.style.height = '300px';
+    img.style.width = 'auto';
+    img.style.maxWidth = '100%';
+  }
+  img.style.display = 'block';
+  img.style.margin = '0 auto';
+}
+
 function renderLinks(links) {
   const grid = document.getElementById('links-grid');
   grid.innerHTML = '';
   links.forEach((link, index) => {
     const card = document.createElement('div');
     card.className = 'media-card';
+    card.setAttribute('data-index', index);
+    card.draggable = true;
     card.innerHTML = `
       <a href="${link.url}" target="_blank" class="card-link">
-        <img src="${link.image || 'images/default.png'}" alt="${link.title}">
+        <img src="${link.image || 'images/default.png'}" alt="${link.title}" onload="fitImage(this)">
         <h3>${link.title}</h3>
       </a>
       <button class="edit-btn" data-index="${index}">Edit</button>

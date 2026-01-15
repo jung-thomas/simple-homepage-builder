@@ -27,4 +27,4 @@ Run `docker-compose up` to start the app. The port can be configured by setting 
 
 ## Usage
 
-Open the app in your browser. Click "Add Link" to add new media links with title, URL, and image URL. Links are saved on the server and persist across devices and browsers. Use Edit and Delete buttons on each card to modify or remove links. If no image URL is provided, a default image will be used.
+Open the app in your browser. Click "Add Link" to add new media links with title, URL, and image URL. Links are saved on the server and persist across devices and browsers. Use Edit and Delete buttons on each card to modify or remove links. Drag and drop tiles to reorder them. If no image URL is provided, a default image will be used.
