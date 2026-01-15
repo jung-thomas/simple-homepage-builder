@@ -19,21 +19,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('save-link').addEventListener('click', async () => {
     const title = document.getElementById('title').value;
     const url = document.getElementById('url').value;
-    let image = document.getElementById('image').value;
-
-    if (!image && url) {
-      document.getElementById('loading').style.display = 'block';
-      try {
-        const response = await fetch(`/screenshot?url=${encodeURIComponent(url)}`);
-        const data = await response.json();
-        if (data.image) {
-          image = data.image;
-        }
-      } catch (error) {
-        console.error('Failed to get screenshot:', error);
-      }
-      document.getElementById('loading').style.display = 'none';
-    }
+    const image = document.getElementById('image').value;
 
     if (editingIndex >= 0) {
       links[editingIndex] = { title, url, image };
@@ -71,7 +57,7 @@ function renderLinks(links) {
     card.className = 'media-card';
     card.innerHTML = `
       <a href="${link.url}" target="_blank" class="card-link">
-        <img src="${link.image || 'images/default.svg'}" alt="${link.title}">
+        <img src="${link.image || 'images/default.png'}" alt="${link.title}">
         <h3>${link.title}</h3>
       </a>
       <button class="edit-btn" data-index="${index}">Edit</button>

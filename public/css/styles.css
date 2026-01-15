@@ -49,10 +49,14 @@ header::before {
 }
 
 .header-icon {
-  width: 70px;
   height: 70px;
   transition: transform 0.3s ease, filter 0.3s ease;
   filter: drop-shadow(0 0 10px rgba(229, 9, 20, 0.5));
+}
+
+img[src*="film.png"] {
+  width: auto;
+  height: 70px;
 }
 
 .header-icon:hover {
@@ -99,6 +103,20 @@ h1 {
   color: #e50914;
   margin: 10px 0 0 0;
   padding: 0 10px 10px 10px;
+}
+
+.media-card img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+}
+
+img[src*="default.png"] {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  margin: 50px auto 0;
+  display: block;
 }
 
 #add-link-form {
