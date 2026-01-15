@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Media Links Homepage</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <img src="images/popcorn.svg" alt="Popcorn" class="header-icon">
+      <h1>My Media Links</h1>
+      <img src="images/film.svg" alt="Film" class="header-icon">
+      <img src="images/star.svg" alt="Star" class="header-icon">
+    </div>
+    <button id="add-link-btn">Add Link</button>
+  </header>
+  <div id="links-grid" class="grid-container">
+    <!-- Dynamically populated media cards -->
+  </div>
+  <div id="add-link-form" style="display: none;">
+    <input type="text" id="title" placeholder="Title">
+    <input type="url" id="url" placeholder="URL">
+    <input type="url" id="image" placeholder="Image URL">
+    <button id="save-link">Save</button>
+    <div id="loading" style="display: none; margin-top: 10px; color: #e50914;">Taking screenshot...</div>
+  </div>
+  <script src="js/app.js"></script>
+</body>
+</html>
